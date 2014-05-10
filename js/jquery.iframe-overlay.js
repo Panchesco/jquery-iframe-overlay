@@ -1,3 +1,4 @@
+(function($){
 		$.fn.iframeOverlay	= function(options)
 		{
 		
@@ -142,3 +143,4 @@
 			};
 		
 		}
+	})(jQuery)
