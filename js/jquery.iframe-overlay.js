@@ -157,7 +157,7 @@
 				{
 						$(settings.overlay).fadeIn(300);
 						
-						nIntId = setInterval(function(){sizeWrapper()}, 300)
+						//nIntId = setInterval(function(){sizeWrapper()}, 300)
 						
 				}
 				
@@ -183,6 +183,7 @@
 						positionWrapper();
 						
 					});
+					
 				}
 				
 				
