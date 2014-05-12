@@ -18,10 +18,19 @@
 			opacity: 1;
 		}
 		
+		#overlay a
+		{
+			text-decoration: none;
+			color: #eeeeee;
+			
+		}
+		
 		#controls
 		{
 			float: right;
 			z-index: 9998;
+			margin-right: 1em;
+			margin-top: 1em;
 		}
 		
 		
