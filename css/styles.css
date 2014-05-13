@@ -18,10 +18,21 @@
 			opacity: 1;
 		}
 		
+		#overlay a
+		{
+			text-decoration: none;
+			color: #eeeeee;
+		}
+		#next,#prev
+		{
+			padding: 1em;
+		}
+		
 		#controls
 		{
 			float: right;
 			z-index: 9998;
+			margin: 1em;
 		}
 		
 		

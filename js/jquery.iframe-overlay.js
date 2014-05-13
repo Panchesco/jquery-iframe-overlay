@@ -17,6 +17,8 @@
 								href:	'',
 								prevId: "#previous",
 								nextId: "#next",
+								nextHref: '',
+								prevHref: '',
 								dataItem: 0
 					 }, options );
 					 
@@ -29,102 +31,39 @@
 					$(this).each(function(){
 						$(this).attr("data-item",i);
 						items[i]	= $(this);
+						
+						
 						i++;
 					});
 					
 					
+					settings.max = items.length-1;
+
 				
 					$(this).each(function(){
 
 						// Click event handler.
 						$(this).on("click",function(){
 						
-							settings.dataItem	= $(this).attr("data-item");
-							
-							oldHref = setPrev(settings.dataItem);
-							newHref = setNext(settings.dataItem);
+							//settings.dataItem	= $(this).attr("data-item");
 							
 							settings.href = $(this).attr("href");
 							
+							settings.dataItem = $(this).attr("data-item");
 							
-							handleOverlay(settings);
+							handleOverlay();
 
 							return false;
 							    
 							});
 					});
-					
+							
 									
 	
 				/** Functions ***********************************************************/
 				
 				
-				/**
-				 * Get the href value for the next older item.
-				 * @param dataItem integer
-				 * @return string
-				 */
-				 prevHref	= function()
-				 {
-				 
-				 		// If at last item, go back to first.
-				 		if(settings.dataItem==(items.length-1)){
-						 	
-						 	key = 0;
-						 	
-				 		} else {
-				 		
-				 			key = settings.dataItem+1;
-						 	
-				 		}
 
-				 	return $(items[key]).attr("href");
-				 }
-				 
-				 
-				 /**
-				 * Get the href value for the next newer/acsending item.
-				 * @param dataItem integer
-				 * @return string
-				 */
-				 nextHref	= function()
-				 {
-				 
-				 	// If at last item, go back to first.
-				 		if(settings.dataItem==0){
-						 	
-						 	key = items.length-1;
-						 	
-				 		} else {
-				 		
-				 			key = settings.dataItem-1;
-						 	
-				 		}
-
-				 	return $(items[key]).attr("href");
-				 }
-				 
-				 
-				 /**
-				  * Set href attr of #next link.
-				  */
-				  setNext	= function()
-				  {
-					  href = nextHref(settings.dataItem);
-					  
-					  return $(settings.nextId).attr("href",href);
-				  }
-				  
-				  /**
-				  * Set href attr of #next link.
-				  */
-				  setPrev	= function()
-				  {
-					  href = prevHref(settings.dataItem);
-					  
-					  return $(settings.prevId).attr("href",href);
-				  }
-	
 				
 				/** 
 				 * Close Overlay events.
@@ -220,85 +159,69 @@
 				/**
 				 * Create a new iframe with the src from the clicked element.
 				 */
-				newIframe	= function(src)
+				newIframe	= function()
 				{
-					html = '<iframe src="'+src+'" frameborder="0" scrolling="no" allowtransparency="true"></iframe>';
+					html = '<iframe src="'+settings.href+'" frameborder="0" scrolling="no" allowtransparency="true"></iframe>';
 					
 					$(settings.wrapper).html(html);
 					
-					return;
+					return false;
 
 				}
 				
 				
-				function findDataItem(src)
-				{
+				/**
+				 * Update next/prev links hrefs
+				 */
+				 nextHandler	= function()
+				 {
+				 
+						 settings.href		= $(items[settings.dataItem]).attr("href");
+						 
+						 newIframe();
 
-					$(items).each(function(){
-						href = $(this).attr("href");
-						if(href==src)
-						{
-							settings.dataItem	=  $(this).attr("data-item");
-							return;	
-						}
+				 }
+				 
+				 
+				 /**
+				  * Handle previous/next events.
+				  */
+				  prevNextHandler	= function()
+				  {
 
-					});
-					
-					
-
-				}
-				
-				
-				// Update next & previous links.
-				
-				// Next 
-				nextIdHandler	= function()
-				{
-					$(settings.nextId).on("click",function(){
-					
-							var src = $(this).attr("href");
-
-							// update dataItem var.
-							if(settings.dataItem==0){
-								settings.dataItem = items.length - 1;
-							} else {
-								settings.dataItem = settings.dataItem - 1;
+				  		$(settings.nextId).on("click",function(){
+							settings.dataItem--;
+							if(settings.dataItem<0)
+							{
+								settings.dataItem = (items.length-1);	
 							}
+						
+						settings.href = $(items[settings.dataItem]).attr("href");
+						
+						newIframe();
+						
+						return false;
+					});		
 					
-							setNext();
-							
-							newIframe(src);
-							
-							return false;
-							
-						});
-				}
-					
-				// Previous 
-				prevIdHandler	= function()
-				{
 					$(settings.prevId).on("click",function(){
-					
-							var src = $(this).attr("href");
-							
-							
-							
-							// update dataItem var.
-							if(settings.dataItem<items.length){
-								settings.dataItem = settings.dataItem + 1;
-							} else {
-								settings.dataItem = 0;
-							}
-					
-							setPrev();
-							
-							newIframe(src);
-							
-							return false;
-							
-						});
-					
-					}
+						settings.dataItem++;
+						if(settings.dataItem>(items.length-1))
+						{
+							settings.dataItem = 0;	
+						}
+						
+						settings.href = $(items[settings.dataItem]).attr("href");
+						
+						newIframe();
+						
+						return false;
+					});	
+				  
+				  }
+				  
+				  
+				 
+				
 				
 	
 				/**
@@ -312,12 +235,13 @@
 					
 					closeOverlay();
 					
-					newIframe(settings.href,settings.dataItem);
+					newIframe();
 					
 					showOverlay();
 
-						
 				};
+				
+				prevNextHandler();
 			
 			}
 		
