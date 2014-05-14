@@ -8,12 +8,13 @@
 				var currDataItem = 0;
 					
 				var settings = $.extend({
+					 
 					 // These are the defaults.
 					 			wrapper: "#embed-wrapper",
 								defWidth: 610,
 								defHeight: 712,
 								overlay: "#overlay",
-								closeOverlay: ".close-overlay",
+								closeOverlay: "#close-overlay",
 								href:	'',
 								prevId: "#previous",
 								nextId: "#next",
@@ -32,8 +33,8 @@
 						$(this).attr("data-item",i);
 						items[i]	= $(this);
 						
-						
 						i++;
+						
 					});
 					
 					
@@ -45,7 +46,6 @@
 						// Click event handler.
 						$(this).on("click",function(){
 						
-							//settings.dataItem	= $(this).attr("data-item");
 							
 							settings.href = $(this).attr("href");
 							
@@ -62,8 +62,6 @@
 	
 				/** Functions ***********************************************************/
 				
-				
-
 				
 				/** 
 				 * Close Overlay events.
@@ -94,10 +92,10 @@
 				 */
 				showOverlay	= function()
 				{
+	
 						$(settings.overlay).fadeIn(300);
 						
-						//nIntId = setInterval(function(){sizeWrapper()}, 300)
-						
+						nIntId = setInterval( function(){ sizeWrapper(); }, 300);	
 				}
 				
 				/**
@@ -105,24 +103,22 @@
 				 */
 				sizeWrapper	= function()
 				{
-					bw	= $("body").width();
-					bh	= $("body").height();
-		
-					
-					w 	= (bw>settings.defWidth) ? settings.defWidth : bw;
-					
-					settings.defHeight = w+100;
-					
-					h 	= (bh>settings.defHeight) ? settings.defHeight : bh+100;
-					
-					$(settings.overlay).css({width:"100%",height:"100%"});
-		
-					$(settings.wrapper).animate({width:w,height:h},1,function(){
-						
-						positionWrapper();
-						
-					});
-					
+						bw	= $("body").width();
+						bh	= $("body").height();
+							   
+							   settings.wrapperWidth		= (bw > settings.defWidth) ? settings.defWidth : bw;
+							   
+							   settings.defHeight			= settings.wrapperWidth+100;
+							   
+							   settings.wrapperHeight		= (bh > settings.defHeight) ? settings.defHeight : bh+100;
+							   
+							   $(settings.overlay).css({width:"100%",height:"100%"});
+							   
+							   $(settings.wrapper).animate({width:settings.wrapperWidth,height:settings.wrapperHeight},1,function(){
+							       
+							       positionWrapper();
+							       
+							   });
 				}
 				
 				
@@ -137,10 +133,15 @@
 					bw	= $("body").width();
 					bh	= $("body").height();
 					
-					t		= ((bh-h)>0) ? (bh-h)/2 : 0;
-					l	= ((bw-w)>0) ? (bw-w)/2 : 0; 
+					cls	= $(settings.closeOverlay).height()*1.25;
 					
-					$(settings.wrapper).animate({"margin-top":t,"margin-left":l},1);
+					t		= ((bh-h)>cls) ? (bh-h)/2 : cls;
+					l		= ((bw-w)>0) ? (bw-w)/2 : 0; 
+					
+					$(settings.wrapper).animate({"margin-top":t,"margin-left":l},1,function(){
+						
+						positionPrevNext();
+					});
 
 				}
 				
@@ -151,8 +152,25 @@
 				 positionPrevNext	= function()
 				 {
 				 
-				 	// TODO
-					 
+				 	
+				 	bh	= $("body").height();
+				 	bw	= $("body").width();
+
+					settings.defHeight = w+100;
+					
+					h 	= $(settings.nextId).height();
+					
+					t = (bh-h)/2;
+					l = ((bw-settings.wrapperWidth)/2)-(h*2); 
+					
+					if(l<(h*2))
+					{
+						l=h*2;
+					}
+
+					$(settings.nextId).css({position:"absolute",top:t,left:l});
+					$(settings.prevId).css({position:"absolute",top:t,right:l});
+					
 				 }
 				
 				
@@ -161,7 +179,7 @@
 				 */
 				newIframe	= function()
 				{
-					html = '<iframe src="'+settings.href+'" frameborder="0" scrolling="no" allowtransparency="true"></iframe>';
+					html = '<iframe src="'+settings.href+'" frameborder="0" scrolling="no" allowtransparency="true" onload=""></iframe>';
 					
 					$(settings.wrapper).html(html);
 					
@@ -169,19 +187,13 @@
 
 				}
 				
+				function showWrapper()
+				{
+					
+					$(settings.wrapper).fadeIn(1300);
+				}
 				
-				/**
-				 * Update next/prev links hrefs
-				 */
-				 nextHandler	= function()
-				 {
-				 
-						 settings.href		= $(items[settings.dataItem]).attr("href");
-						 
-						 newIframe();
-
-				 }
-				 
+				
 				 
 				 /**
 				  * Handle previous/next events.
@@ -204,7 +216,9 @@
 					});		
 					
 					$(settings.prevId).on("click",function(){
+						
 						settings.dataItem++;
+						
 						if(settings.dataItem>(items.length-1))
 						{
 							settings.dataItem = 0;	
@@ -219,9 +233,6 @@
 				  
 				  }
 				  
-				  
-				 
-				
 				
 	
 				/**
@@ -242,7 +253,12 @@
 				};
 				
 				prevNextHandler();
-			
+				
+				$("body").on("scroll",function(){
+					
+					
+				});
+				
 			}
 		
 })(jQuery);
