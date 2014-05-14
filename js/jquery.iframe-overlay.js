@@ -78,11 +78,15 @@
 				{
 					
 					$(settings.closeOverlay).on("click",function(){
-						$(settings.overlay).fadeOut(300);
+						$(settings.overlay).fadeOut(300,function(){
+							emptyWrapper();
+						});
 					});
 					
 					$(settings.overlay).on("click",function(){
-						$(this).fadeOut(300);
+						$(this).fadeOut(300,function(){
+							emptyWrapper();
+						});
 					});
 					
 					$(settings.nextId).css({display:"none"});
@@ -270,8 +274,16 @@
 					$(settings.wrapper).html(html);
 					
 					return false;
-
 				}
+				
+				/**
+				 * Remove empty the wrapper.
+				 */
+				 emptyWrapper	= function()
+				 {
+					 $(settings.wrapper).html('');
+				 }
+				 
 				
 				function showWrapper()
 				{
