@@ -33,7 +33,6 @@
 					$(this).each(function(){
 						$(this).attr("data-item",i);
 						items[i]	= $(this);
-						
 						i++;
 						
 					});
