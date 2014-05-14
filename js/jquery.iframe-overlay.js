@@ -11,20 +11,28 @@
 					 
 					 // These are the defaults.
 					 			wrapper: "#embed-wrapper",
+					 			wrapperTop: 0,
+					 			wrapperLeft: 0,
+					 			wrapperBottom: 0,
+					 			wrapperRight: 0,
 								defWidth: 610,
 								defHeight: 712,
 								overlay: "#overlay",
 								closeOverlay: "#close-overlay",
+								closeOverlayPos: "iframe-top-right",
 								href:	'',
 								prevId: "#previous",
 								nextId: "#next",
 								nextHref: '',
 								prevHref: '',
 								dataItem: 0,
-								startDims: 0	
+								startDims: 0,
+								controls: ".controls"
+									
 					 }, options );
 					 
-				
+					
+					 
 				
 					// Index the items into an array and add data-item attribute to each.
 					var i		= 0;
@@ -77,6 +85,9 @@
 						$(this).fadeOut(300);
 					});
 					
+					$(settings.nextId).css({display:"none"});
+					$(settings.prevId).css({display:"none"});
+					
 					nIntIdClear();
 				}
 				
@@ -112,6 +123,8 @@
 					//Only try to resize the wrapper if the window dimensions have changed.
 					if(currDims != settings.startDims)
 					{
+						
+						$(settings.controls).hide();
 						sizeWrapper();
 					}
 					
@@ -139,6 +152,8 @@
 							   settings.wrapperWidth*=.85;
 							   settings.wrapperHeight*=.85;
 							   
+							   
+							   
 							   $(settings.wrapper).animate({width:settings.wrapperWidth,height:settings.wrapperHeight},1,function(){
 							       
 							       positionWrapper();
@@ -158,14 +173,31 @@
 					bw	= $("body").width();
 					bh	= $("body").height();
 					
-					cls	= $(settings.closeOverlay).height()*1.25;
+				
 					
-					t		= ((bh-h)>cls) ? (bh-h)/2 : cls;
+					t		= ((bh-h)>0) ? (bh-h)/2 : 0;
 					l		= ((bw-w)>0) ? (bw-w)/2 : 0; 
 					
 					$(settings.wrapper).animate({"margin-top":t,"margin-left":l},1,function(){
+					
+					
+					// Set settings.wrapper position properties.
+					settings.wrapperTop		= t;
+					settings.wrapperLeft	= l;
+					settings.wrapperBottom	= t+settings.wrapperHeight;
+					settings.wrapperRight	= l+settings.wrapperWidth;
+					
+					
+					
 						
-						positionPrevNext();
+						setTimeout(function(){
+							
+							positionPrevNext();
+							positionCloseOverlay();
+							
+						},900);
+						
+						
 					});
 
 				}
@@ -186,17 +218,46 @@
 					h 	= $(settings.nextId).height();
 					
 					t = (bh-h)/2;
-					l = ((bw-settings.wrapperWidth)/2)-(h*2); 
+					l = ((bw-settings.wrapperWidth)/2)-(h*1); // Play around with this setting to adjust distance of prev/next from wrapper edge. 
 					
 					if(l<(h*2))
 					{
 						l=h*2;
 					}
 
-					$(settings.nextId).css({position:"absolute",top:t,left:l});
-					$(settings.prevId).css({position:"absolute",top:t,right:l});
+					$(settings.nextId).css({display:"block",position:"absolute",top:t,left:l});
+					$(settings.prevId).css({display:"block",position:"absolute",top:t,right:l});
 					
 				 }
+				 
+				 /**
+				  * Position the close overlay link.
+				  */
+				  positionCloseOverlay	= function()
+				  {
+				  
+				  					  
+					  switch(settings.closeOverlayPos)
+					  {
+						  
+						  default:
+						  
+						  clsHeight	= $(settings.closeOverlay).height();
+						  clsT		= settings.wrapperTop - (clsHeight*.5);
+						  clsL		= settings.wrapperLeft + settings.wrapperWidth - (clsHeight*.4);
+						  $(settings.closeOverlay).animate({top:clsT,left:clsL},1,function(){
+							  
+							  $(settings.controls).fadeIn(300);
+							  
+						  });
+						  
+						  
+						  break;
+						  
+					  }
+					  
+					  
+				  }
 				
 				
 				/**
