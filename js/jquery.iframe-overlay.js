@@ -20,7 +20,8 @@
 								nextId: "#next",
 								nextHref: '',
 								prevHref: '',
-								dataItem: 0
+								dataItem: 0,
+								startDims: 0	
 					 }, options );
 					 
 				
@@ -95,8 +96,27 @@
 	
 						$(settings.overlay).fadeIn(300);
 						
-						nIntId = setInterval( function(){ sizeWrapper(); }, 300);	
+						nIntId = setInterval( function(){ handleResize(); }, 300);	
 				}
+				
+				
+				/**
+				 * Handle window resize.
+				 */
+				 handleResize = function()
+				 {
+					bw	= $("body").width();
+					bh	= $("body").height();
+					
+					currDims = bw*bh;
+					
+					//Only try to resize the wrapper if the window dimensions have changed.
+					if(currDims != settings.startDims)
+					{
+						sizeWrapper();
+					}
+					
+				 }
 				
 				/**
 				 * Set the size of the embed wrapper.
@@ -105,6 +125,9 @@
 				{
 						bw	= $("body").width();
 						bh	= $("body").height();
+						
+						// Set the current window dimensions so we'll have something to check against if the window is resized.
+						settings.startDims = bw*bh;
 							   
 							   settings.wrapperWidth		= (bw > settings.defWidth) ? settings.defWidth : bw;
 							   
@@ -112,7 +135,10 @@
 							   
 							   settings.wrapperHeight		= (bh > settings.defHeight) ? settings.defHeight : bh+100;
 							   
-							   $(settings.overlay).css({width:"100%",height:"100%"});
+							   $(settings.overlay).css({width:"100%","min-height":"100%"});
+							   
+							   settings.wrapperWidth*=.85;
+							   settings.wrapperHeight*=.85;
 							   
 							   $(settings.wrapper).animate({width:settings.wrapperWidth,height:settings.wrapperHeight},1,function(){
 							       
