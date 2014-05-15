@@ -27,7 +27,9 @@
 								prevHref: '',
 								dataItem: 0,
 								startDims: 0,
-								controls: ".controls"
+								controls: ".controls",
+								videoClass: '.video-thumb',
+								videoThumbTempSel: "#video-thumb-template"
 									
 					 }, options );
 					 
@@ -65,8 +67,10 @@
 							    
 							});
 					});
+					
+					// Set video thumbnail template to variable.
+					var videoIndicatorHtml	= $(settings.videoThumbTempSel).html();
 							
-									
 	
 				/** Functions ***********************************************************/
 				
@@ -95,7 +99,9 @@
 					nIntIdClear();
 				}
 				
-				
+				/**
+				 * Clear listener for window resizing.
+				 */
 				function nIntIdClear()
 				{
 					clearInterval(nIntId);
@@ -164,6 +170,30 @@
 							       
 							   });
 				}
+				
+				
+				/**
+				 * Add overlay to thumbnails for video.
+				 */
+				 videoIndicator	= function()
+				 {
+					 
+					 $(settings.videoClass).each(function(){
+						 
+						w = $(this).find("img").width();
+						h = $(this).find("img").height();
+						
+						imgSrc = $(this).find("img").attr("src");
+						
+						$(this).children("a").children("img").remove();
+						
+						$(this).children("a").html(videoIndicatorHtml);
+						
+						$(this).css({width:w,height:h,background:'url('+imgSrc+') no-repeat center center'});
+						 
+					 });
+					 
+				 }
 				
 				
 				/**
@@ -269,7 +299,7 @@
 				 */
 				newIframe	= function()
 				{
-					html = '<iframe src="'+settings.href+'" frameborder="0" scrolling="no" allowtransparency="true" onload=""></iframe>';
+					html = '<iframe src="'+settings.href+'" frameborder="0" scrolling="no" allowtransparency="true" onload="" autoplay></iframe>';
 					
 					$(settings.wrapper).html(html);
 					
@@ -350,6 +380,8 @@
 
 				};
 				
+				
+				videoIndicator();
 				prevNextHandler();
 				
 				$("body").on("scroll",function(){
@@ -358,5 +390,9 @@
 				});
 				
 			}
+			
+			
+			
+			
 		
 })(jQuery);

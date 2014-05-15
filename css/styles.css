@@ -17,8 +17,6 @@
 			opacity: 1;
 		}
 		
-		
-		
 		#overlay a,
 		a#next,a#previous,
 		a#close-overlay
@@ -30,8 +28,6 @@
 			display: none;
 			text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);	
 		}
-		
-		
 		
 		a#next,a#previous
 		{
@@ -55,6 +51,33 @@
 			height: 100%;
 		}
 		
+		.video-thumb
+		{
+			
+			display: inline-block;
+		}
+		
+		a.video
+		{
+			
+			font-size: 32px;	
+			text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);	
+			text-decoration: none;
+		}
+		
+		.thumbnails img
+		{
+		
+			max-width: 150px;
+			height: auto;
+		}
+		
+		#video-thumb-template
+		{
+			
+			display: none;
+		}
+
 		
 		
 		
