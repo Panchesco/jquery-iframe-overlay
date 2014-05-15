@@ -28,10 +28,9 @@
 								video: true,
 								videoClass: '.thumb-video',
 								videoThumbTempSel: "#video-thumb-template"
+								
 									
 					 }, options );
-					 
-					
 					 
 				
 					// Index the items into an array and add data-item attribute to each.
