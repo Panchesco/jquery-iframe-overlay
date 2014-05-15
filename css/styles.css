@@ -12,7 +12,7 @@
 			display: none;
 			width: 100%;
 			min-height: 100%;
-			background: transparent url(/assets/jquery-iframe-overlay/img/shade-90.png);
+			background: transparent url(/img/shade-90.png);
 			z-index: 9997;
 			opacity: 1;
 		}
@@ -42,7 +42,7 @@
 			height: 0;
 			display: block;
 			margin: 0 0 0 0;
-			background:  url(/assets/jquery-iframe-overlay/img/loadinfo.gif) no-repeat center center;
+			background:  url(/img/loadinfo.gif) no-repeat center center;
 		}
 		
 		#embed-wrapper iframe

@@ -5,7 +5,6 @@
 			
 				// Set interval id
 				var nIntId;
-				var currDataItem = 0;
 					
 				var settings = $.extend({
 					 
@@ -36,9 +35,9 @@
 					 
 				
 					// Index the items into an array and add data-item attribute to each.
-					var i		= 0;
-					var items	= [];
-					
+
+					var items = [];
+					i = 0;
 					$(this).each(function(){
 						$(this).attr("data-item",i);
 						items[i]	= $(this);
@@ -322,14 +321,7 @@
 					 $(settings.wrapper).html('');
 				 }
 				 
-				
-				function showWrapper()
-				{
-					
-					$(settings.wrapper).fadeIn(1300);
-				}
-				
-				
+
 				 
 				 /**
 				  * Handle previous/next events.
@@ -376,7 +368,6 @@
 				 */
 				handleOverlay = function(settings)
 				{
-					var nIntervalId;
 
 					sizeWrapper();
 					
