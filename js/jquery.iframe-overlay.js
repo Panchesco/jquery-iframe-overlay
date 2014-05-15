@@ -28,7 +28,7 @@
 								dataItem: 0,
 								startDims: 0,
 								controls: ".controls",
-								videoClass: '.video-thumb',
+								videoClass: '.thumb-video',
 								videoThumbTempSel: "#video-thumb-template"
 									
 					 }, options );
@@ -179,17 +179,23 @@
 				 {
 					 
 					 $(settings.videoClass).each(function(){
-						 
-						w = $(this).find("img").width();
-						h = $(this).find("img").height();
 						
-						imgSrc = $(this).find("img").attr("src");
 						
-						$(this).children("a").children("img").remove();
-						
-						$(this).children("a").html(videoIndicatorHtml);
-						
-						$(this).css({width:w,height:h,background:'url('+imgSrc+') no-repeat center center'});
+						if( false === $(this).hasClass('rendered'))
+						{
+							w = $(this).find("img").width();
+							h = $(this).find("img").height();
+							
+							imgSrc = $(this).find("img").attr("src");
+							
+							$(this).children("a").children("img").remove();
+							
+							$(this).children("a").html(videoIndicatorHtml);
+							
+							$(this).css({width:w,height:h,background:'url('+imgSrc+') no-repeat center center'});
+							
+							$(this).addClass("rendered");
+						}
 						 
 					 });
 					 
