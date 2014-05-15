@@ -23,11 +23,10 @@
 								href:	'',
 								prevId: "#previous",
 								nextId: "#next",
-								nextHref: '',
-								prevHref: '',
 								dataItem: 0,
 								startDims: 0,
 								controls: ".controls",
+								video: true,
 								videoClass: '.thumb-video',
 								videoThumbTempSel: "#video-thumb-template"
 									
@@ -69,7 +68,10 @@
 					});
 					
 					// Set video thumbnail template to variable.
-					var videoIndicatorHtml	= $(settings.videoThumbTempSel).html();
+					if(settings.video === true)
+					{
+						var videoIndicatorHtml	= $(settings.videoThumbTempSel).html();
+					}
 							
 	
 				/** Functions ***********************************************************/
@@ -386,8 +388,11 @@
 
 				};
 				
+				if(settings.video === true)
+				{
+					videoIndicator();
+				}
 				
-				videoIndicator();
 				prevNextHandler();
 				
 				$("body").on("scroll",function(){
